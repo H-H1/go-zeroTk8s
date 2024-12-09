@@ -48,11 +48,12 @@
 
 会得到
 
-![698285c3e397575075f2951fd1b8b10](D:\微信聊天文件\WeChat Files\wxid_k31pp9vfql5j22\FileStorage\Temp\698285c3e397575075f2951fd1b8b10.png)
+![698285c3e397575075f2951fd1b8b10](https://github.com/user-attachments/assets/186c5c6d-5d26-4b7b-9b6f-6a8e719a37ba)
 
 
+![image-20241210044704294](https://github.com/user-attachments/assets/0d019277-4e20-4ae5-9795-3d2621e5526a)
 
-![image-20241210044704294](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210044704294.png)
+
 
 - 查看运行状态	
 
@@ -66,14 +67,16 @@ kubectl port-forward svc/prometheus-service 5556:9090 -n tk8s
 ```
 
 测试下服务是否在k8s运行正常，可以看到三个不同的Hostname
+![image-20241210045153866](https://github.com/user-attachments/assets/cee74bd6-ac72-4617-b4db-1b072be6f92a)
+![70a17860af4ff41ef1d162574a2cef2](https://github.com/user-attachments/assets/d75417c1-a175-468e-9d42-764c217ffa43)
+![8b5329bc9f599799c1e548c827a0ecb](https://github.com/user-attachments/assets/96d99380-b4da-457c-8849-f7e96b40d6bc)
 
-![image-20241210045153866](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210045153866.png)
 
-![70a17860af4ff41ef1d162574a2cef2](D:\微信聊天文件\WeChat Files\wxid_k31pp9vfql5j22\FileStorage\Temp\70a17860af4ff41ef1d162574a2cef2.png)![8b5329bc9f599799c1e548c827a0ecb](D:\微信聊天文件\WeChat Files\wxid_k31pp9vfql5j22\FileStorage\Temp\8b5329bc9f599799c1e548c827a0ecb.png)
 
 浏览器打开，可以看到pmetheus启动
 
-![7f788a3e49193492fe7add2747c8be0](D:\微信聊天文件\WeChat Files\wxid_k31pp9vfql5j22\FileStorage\Temp\7f788a3e49193492fe7add2747c8be0.png)
+![7f788a3e49193492fe7add2747c8be0](https://github.com/user-attachments/assets/1581c4e4-5fa4-4b3d-8619-378a631f0b53)
+
 
 
 
@@ -161,9 +164,10 @@ INSERT INTO testtable VALUES (1, 'Test Data');
 ```
 
 可以看到master上插入
+![image-20241210051737759](https://github.com/user-attachments/assets/71acb111-02d2-469a-9e53-e649050b3c66)
 
-![image-20241210051737759](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210051737759.png)
+
 
 slave上完成主从复制
+![image-20241210051801418](https://github.com/user-attachments/assets/4c4177e8-170d-4190-bfde-b527ea12f24d)
 
-![image-20241210051801418](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210051801418.png)
