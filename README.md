@@ -43,3 +43,127 @@
 
 ![image-20241210041708249](https://github.com/user-attachments/assets/17b2e4cc-87d7-4855-94fd-5b8e678387bd)
 
+1. 打好镜像后，k8ts执行项目下单api和rpc的yaml	
+2. 以及go-zeroTk8s\deploy的的yaml，记得改api和rpc的*.yaml
+
+会得到
+
+![698285c3e397575075f2951fd1b8b10](D:\微信聊天文件\WeChat Files\wxid_k31pp9vfql5j22\FileStorage\Temp\698285c3e397575075f2951fd1b8b10.png)
+
+
+
+![image-20241210044704294](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210044704294.png)
+
+- 查看运行状态	
+
+  可以暴露指定的k8s端口，也可以直接使用nodeport
+
+```go
+kubectl port-forward svc/base-api-svc 8887:8887 -n tk8s   #使用port-forward，
+
+kubectl port-forward svc/prometheus-service 5556:9090 -n tk8s
+
+```
+
+测试下服务是否在k8s运行正常，可以看到三个不同的Hostname
+
+![image-20241210045153866](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210045153866.png)
+
+![70a17860af4ff41ef1d162574a2cef2](D:\微信聊天文件\WeChat Files\wxid_k31pp9vfql5j22\FileStorage\Temp\70a17860af4ff41ef1d162574a2cef2.png)![8b5329bc9f599799c1e548c827a0ecb](D:\微信聊天文件\WeChat Files\wxid_k31pp9vfql5j22\FileStorage\Temp\8b5329bc9f599799c1e548c827a0ecb.png)
+
+浏览器打开，可以看到pmetheus启动
+
+![7f788a3e49193492fe7add2747c8be0](D:\微信聊天文件\WeChat Files\wxid_k31pp9vfql5j22\FileStorage\Temp\7f788a3e49193492fe7add2747c8be0.png)
+
+
+
+## 主从复制配置
+
+要在 Kubernetes 中配置 MySQL 的主从复制，你需要进行以下步骤：
+
+1. **创建主节点和从节点的 StatefulSet**
+2. **配置主节点和从节点的 MySQL 配置文件**
+3. **初始化从节点的数据**
+
+目前还需要完成3， 初始化从节点的数据
+
+在主节点上创建一个用于复制的用户，并授权给从节点。
+
+```sql
+sh：
+mysql -uroot -pPXDN93VRKUm8TeE7
+
+sql 
+查看是否生效my.cnf
+
+SHOW VARIABLES LIKE 'server_id';
+SHOW VARIABLES LIKE 'log_bin';
+SHOW VARIABLES LIKE 'binlog_format';
+SHOW VARIABLES LIKE 'gtid_mode';
+SHOW VARIABLES LIKE 'enforce-gtid-consistency';
+
+创建用于从服务器连接主服务器的用户
+
+sql
+
+CREATE USER 'root'@'%' IDENTIFIED BY 'PXDN93VRKUm8TeE7';
+GRANT REPLICATION SLAVE ON *.* TO 'root'@'%';
+FLUSH PRIVILEGES;
+
+```
+
+然后在主节点上获取二进制日志的位置信息。
+
+```sql
+sql
+
+SHOW MASTER STATUS;
+```
+
+记录下 `File` 和 `Position` 的值，例如：
+
+```sql
++------------------+----------+--------------+------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++------------------+----------+--------------+------------------+
+| binlog.000002    | 4007      |              |                  |
++------------------+----------+--------------+------------------+
+```
+
+在从节点上执行以下命令来启动复制：
+
+```sql
+sql
+
+STOP SLAVE IO_THREAD FOR CHANNEL '';
+CHANGE MASTER TO
+  MASTER_HOST='mysql-master',
+  MASTER_USER='root',
+  MASTER_PASSWORD='PXDN93VRKUm8TeE7',
+  MASTER_LOG_FILE='mysql-bin.000001',
+  MASTER_LOG_POS=157;
+START SLAVE IO_THREAD FOR CHANNEL '';
+START SLAVE;    #开始slave
+SHOW SLAVE STATUS \G;  #查看详情，是否错误
+
+```
+
+导入数据，测试是否主从配置成功
+
+```sql
+#主节点
+CREATE DATABASE t1111;
+USE t1111;
+CREATE TABLE testtable (id INT PRIMARY KEY, name VARCHAR(100));
+INSERT INTO testtable VALUES (1, 'Test Data');
+
+
+```
+
+可以看到master上插入
+
+![image-20241210051737759](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210051737759.png)
+
+slave上完成主从复制
+
+![image-20241210051801418](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210051801418.png)
