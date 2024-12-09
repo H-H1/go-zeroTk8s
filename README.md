@@ -32,12 +32,14 @@
   测试下跑通
   ```
 
+![image-20241210035953365](https://github.com/user-attachments/assets/f524ec80-f79a-40df-8de2-4296ff783765)
 
-![image-20241210035953365](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210035953365.png)
+
 
 
 
 - 根据服务下单Dockerfile把api和Dockerfile 镜像打出来
 
-![image-20241210041708249](C:\Users\1\AppData\Roaming\Typora\typora-user-images\image-20241210041708249.png)
+
+![image-20241210041708249](https://github.com/user-attachments/assets/17b2e4cc-87d7-4855-94fd-5b8e678387bd)
 
