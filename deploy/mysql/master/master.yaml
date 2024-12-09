@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-master
+  namespace: tk8s
+spec:
+  serviceName: mysql-master
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-master
+  template:
+    metadata:
+      labels:
+        app: mysql-master
+    spec:
+      containers:
+      - name: mysql
+        image: mysql_my:v5
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql  # 持久化存储挂载
+        - name: mysql-config-master  # 挂载mysql-config-master到pod的/etc/mysql/conf.d
+          mountPath: /etc/mysql
+      volumes:
+      - name: mysql-config-master
+        configMap:
+          name: mysql-config-master
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-persistent-storage
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 500Mi
+      storageClassName: mysql-storage  # 确保storageClassName正确
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-master
+  namespace: tk8s
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: mysql-master
+

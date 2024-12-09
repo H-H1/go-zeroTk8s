@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: base-api
+  namespace: tk8s
+  labels:
+    app: base-api
+spec:
+  replicas: 3
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: base-api
+  template:
+    metadata:
+      labels:
+        app: base-api
+    spec:
+      serviceAccountName: find-endpoints
+      containers:
+      - name: base-api
+        image: tapi:v1
+        ports:
+        - containerPort: 8887
+        - containerPort: 4004
+        readinessProbe:
+          tcpSocket:
+            port: 8887
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8887
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: 200m
+            memory: 50Mi
+          limits:
+            cpu: 300m
+            memory: 100Mi
+        volumeMounts:
+        - name: timezone
+          mountPath: /etc/localtime
+      volumes:
+        - name: timezone
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: base-api-svc
+  namespace: tk8s
+spec:
+  ports:
+  - name: http
+    nodePort: 32010
+    port: 8887
+    protocol: TCP
+    targetPort: 8887
+  - name: prometheus
+    nodePort: 32110
+    port: 4004
+    protocol: TCP
+    targetPort: 4004
+  type: NodePort
+  selector:
+    app: base-api
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: base-api-hpa-c
+  namespace: tk8s
+  labels:
+    app: base-api-hpa-c
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: base-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: base-api-hpa-m
+  namespace: tk8s
+  labels:
+    app: base-api-hpa-m
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: base-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

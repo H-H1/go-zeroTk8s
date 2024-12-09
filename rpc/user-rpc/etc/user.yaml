@@ -1,0 +1,13 @@
+Name: user.rpc
+ListenOn: 0.0.0.0:8886
+# Mode: dev
+
+
+#监控
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4005
+  Path: /metrics
+  
+DB:
+  DataSource: root:PXDN93VRKUm8TeE7@tcp(mysql-master:3306)/t1111?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai

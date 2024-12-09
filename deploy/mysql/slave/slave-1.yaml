@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-slave-1
+  namespace: tk8s
+spec:
+  serviceName: "mysql-slave-1"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-slave-1
+  template:
+    metadata:
+      labels:
+        app: mysql-slave-1
+    spec:
+      containers:
+      - name: mysql
+        image: mysql_my:v5
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-password
+        - name: MYSQL_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-username
+        - name: MYSQL_MASTER_HOST
+          value: mysql-master-0
+        - name: MYSQL_MASTER_USER
+          value: root
+        - name: MYSQL_MASTER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: mysql-config-slave-1  # 挂载my.cnf配置
+          mountPath: /etc/mysql 
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "300m"
+          limits:
+            memory: "500Mi"
+            cpu: "1"
+      volumes:
+      - name: mysql-config-slave-1
+        configMap:
+          name: mysql-config-slave-1      
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-persistent-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 500Mi
+      storageClassName: mysql-storage
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-slave-1
+  namespace: tk8s
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: mysql-slave-1
+

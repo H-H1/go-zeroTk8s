@@ -1,0 +1,37 @@
+Name: user
+Host: 0.0.0.0
+Port: 8887
+Mode: dev
+
+# RPC配置
+UserRpcConf:
+  Endpoints:
+    - 127.0.0.1:8886
+  NonBlock: True
+  # Target: K8s://tk8s/base-svc:8886   #k8s模式下，指定目标服务
+
+JwtAuth:
+  AccessSecret: a05326f9-6g450-6u06-8e56k13-5a219e2d
+  
+#监控
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4004
+  Path: /metrics
+
+#数据库、缓存配置
+DB:
+  DataSource: root:PXDN93VRKUm8TeE7@tcp(127.0.0.1:33069)/t1111?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  # DataSource: root:PXDN93VRKUm8TeE7@tcp(mysql-master:3069)/t1111?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+Cache:
+  Host: 127.0.0.1:36379
+  Pass: G62m50oigInC30sf
+
+Log:
+  ServiceName: user
+  Level: error
+
+
+WxMiniConf:
+  AppId: 888888 #小程序appid
+  Secret: 888888 #小程序secret
