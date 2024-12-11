@@ -31,7 +31,7 @@ func (l *GetUserLogic) GetUser(req *types.UserReq) (resp *types.UserReply, err e
 	if err != nil {
 		return nil, err
 	}
-
+	//测试下连接mysql
 	var Testtable *gen.Testtable
 	Testtable, err = l.svcCtx.T1111Model.FindOne(l.ctx, 1)
 
