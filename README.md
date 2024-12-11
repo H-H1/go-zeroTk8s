@@ -1,4 +1,4 @@
-# tk8s
+8# tk8s
  go-zero-k8s脚手架
 
 - api/user/*.yaml根据自己的需求填写
@@ -143,8 +143,8 @@ CHANGE MASTER TO
   MASTER_HOST='mysql-master',
   MASTER_USER='root',
   MASTER_PASSWORD='PXDN93VRKUm8TeE7',
-  MASTER_LOG_FILE='mysql-bin.000001',
-  MASTER_LOG_POS=157;
+  MASTER_LOG_FILE='mysql-bin.000002',
+  MASTER_LOG_POS=4007;
 START SLAVE IO_THREAD FOR CHANNEL '';
 START SLAVE;    #开始slave
 SHOW SLAVE STATUS \G;  #查看详情，是否错误
@@ -158,7 +158,7 @@ SHOW SLAVE STATUS \G;  #查看详情，是否错误
 CREATE DATABASE t1111;
 USE t1111;
 CREATE TABLE testtable (id INT PRIMARY KEY, name VARCHAR(100));
-INSERT INTO testtable VALUES (1, 'Test Data');
+INSERT INTO testtable VALUES (888, 'Test Data');
 
 
 ```
