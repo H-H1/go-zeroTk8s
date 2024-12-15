@@ -1,5 +1,7 @@
 # tk8s
 
+English | [简体中文](README-cn.md)
+
  go-zero-k8s脚手架
 
 - Fill in api/user/*.yaml according to your requirements.

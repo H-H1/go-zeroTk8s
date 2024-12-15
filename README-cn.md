@@ -1,6 +1,6 @@
 # tk8s
 
-English | [简体中文](README-cn.md)
+[English](README.md) | 简体中文
 
  go-zero-k8s脚手架
 
