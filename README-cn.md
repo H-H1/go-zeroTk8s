@@ -2,7 +2,7 @@
 
 [English](README.md) | 简体中文
 
- go-zero-k8s脚手架
+ go-zero-k8s脚手架，后续还会添加更多中间件
 
 - api/user/*.yaml根据自己的需求填写
 

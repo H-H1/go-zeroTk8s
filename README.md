@@ -2,7 +2,7 @@
 
 English | [简体中文](README-cn.md)
 
-go-zero-k8s Scaffold
+go-zero-k8s Scaffold，more middleware will be added in the future
 
 - Fill in api/user/*.yaml according to your requirements.
 
