@@ -2,7 +2,7 @@
 
 English | [简体中文](README-cn.md)
 
- go-zero-k8s脚手架
+go-zero-k8s Scaffold
 
 - Fill in api/user/*.yaml according to your requirements.
 
