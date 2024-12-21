@@ -4,6 +4,15 @@
 
  go-zero-k8s脚手架，后续还会添加更多中间件
 
+- [x] mysql
+- [x] prometheu
+- [ ] redis
+- [ ] grafana
+- [ ] ES
+- [ ] jaeger
+- [ ] kibana
+- [ ] jaeger
+
 - api/user/*.yaml根据自己的需求填写
 
   ```yaml
